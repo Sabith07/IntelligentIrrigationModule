@@ -1,35 +1,94 @@
-int WATERPUMP = 13; //motor pump connected to pin 13
-int sensor = 8; //sensor digital pin vonnected to pin 8
-int val; //This variable stores the value received from Soil moisture sensor.
+# IntelligentIrrigationModule
+S5EEEProject
 
-void setup() {
-  
-  pinMode(13,OUTPUT); //Set pin 13 as OUTPUT pin
-  pinMode(8,INPUT); //Set pin 8 as input pin, to receive data from Soil moisture sensor.
-  //Initialize serial and wait for port to open:
-  Serial.begin(9600); // opens serial port, sets data rate to 9600 bps
-  while (! Serial);// wait for serial port to connect. Needed for native USB
-  Serial.println("Speed 0 to 255");
+#define Temperature and Humidity sensor A0 // Analog pin A0 of Arduino Uno
+int sensor_pin = A0;
+int output_value ;
+int ledPin1 = 13;
+int ledPin2 = 12;
+int ledPin3 = 11;
+int pos = A1; // Define motor position
+——————————————————————————————————————————————
+#define Sensor_PIN No.
+void setup()
+{
+(ledPin1, OUTPUT); (ledPin2, OUTPUT); (ledPin3, OUTPUT); // Define the pinModes
+pinMode(motorPin, OUTPUT); // set A1 to an output so we can use it to turn on the transistor
+Serial.begin(9600); // Baud Rate
+Serial.println(“Reading From the Sensor …”);
 }
-
+—————————————————————————————————————————————-
 void loop()
-  { 
-  if (Serial.available()) //loop to operate motor
-  {
-    int speed = Serial.parseInt(); // to read the number entered as text in the Serial Monitor 
-    if (speed >= 0 && speed <= 255)
-    {
-      analogWrite(WATERPUMP, speed);// tuns on the motor at specified speed 
-    }
-  }
-  val = digitalRead(8);  //Read data from soil moisture sensor  
-  if(val == LOW) 
-  {
-  digitalWrite(13,LOW); //if soil moisture sensor provides LOW value send LOW value to motor pump and motor pump goes off
-  }
-  else
-  {
-  digitalWrite(13,HIGH); //if soil moisture sensor provides HIGH value send HIGH value to motor pump and motor pump get on
-  }
-  delay(400); //Wait for few second and then continue the loop.
+{
+// READ DATA
+Serial.print(“Define Sensor, \t”);
+int chk = Read the Output of Sensor;
+switch (chk)
+{
+case SensorNameLIB_OK:
+Serial.print(“OK,\t”);
+break;
+case SensorNameLIB_ERROR_CHECKSUM:
+Serial.print(“Checksum error,\t”);
+break;
+case SensorNameLIB_ERROR_TIMEOUT:
+Serial.print(“Time out error,\t”);
+break;
+default:
+Serial.print(“Unknown error,\t”);
+break;
 }
+——————————————————————————————————————————————
+// DISPLAY DATA
+Serial.print(“Humidity:”);
+Serial.print(sensorname.humidity, 1);
+Serial.print(“%”);
+Serial.println(“,\t”);
+Serial.print(“Temperature:\t”);
+Serial.print(sensorname.temperature, 1);
+Serial.println(“`C”);
+value= analogRead(sensor_pin);
+value = map(value,550,0,0,100);
+Serial.print(“Mositure : “);
+Serial.print(output_value);
+Serial.println(“%”);
+if (Humidity value>10)
+{
+Sensorinput gets HIGH; //green LED ON
+}
+else {
+Sensorinput gets LOW; //Digital Output
+}
+if (Sensor value>31)
+{
+Sensorinput gets HIGH; // Digital output
+Serial.println(“Tempearture is HIGH”); //yellow LED ON
+}
+else {
+Sensorinput gets Low;
+}
+if (value>50)
+{
+Sensorinput gets HIGH;
+Serial.println(“Moisture is high”);// RED
+}
+else {
+Sensorinput gets LOW;
+}
+if (output_value<10) { Serial.println(“output value is low”); Sensorinput gets HIGH; // Digital output delay(x); Sensorinput gets LOW; // Digital output delay(x); } else { Sensorinput gets HIGH; //Digital output } if(Serial.available()>0)
+{
+char data = Serial.read();
+if (data == ‘a’)
+{
+Motorinp pin gets HIGH; //Digital output
+}
+else if(data == ‘b’)
+{
+Motorinp pin gets LOW; //Digital output
+}
+}
+delay(x);
+}
+//
+// END OF FILE
+//————————————————————
